@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class OperationJob < ApplicationJob
+class OperationJob < ::ActiveJob::Base # ApplicationJob
   queue_as do
     arguments.first[:queue]
   end
