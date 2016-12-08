@@ -10,7 +10,7 @@ require 'operationable/specification'
 # require 'operationable/destroy'
 # require 'operationable/update'
 
-require 'operationable/job'
+# require 'operationable/job'
 
 require 'operationable/runners/base'
 require 'operationable/runners/serial'
