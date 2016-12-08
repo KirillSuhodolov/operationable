@@ -26,11 +26,10 @@ module Operationable
       def initialize_callbacks
       end
 
-      def push_to_queue(callback_method_name, queue=nil)
-        callbacks << {
-          callback_method_name: callback_method_name.to_s,
-          queue: queue.to_s
-        }
+      def push_to_queue(*callback_method_names, queue: nil)
+        callback_method_names.each do |callback_method_name|
+          callbacks << { callback_method_name: callback_method_name.to_s, queue: queue.to_s }
+        end
       end
 
       def callback_names
