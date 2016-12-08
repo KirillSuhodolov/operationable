@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-module Operations
+module Operationable
   module Runners
-    class Serial < ::Operations::Runners::Base
+    class Serial < ::Operationable::Runners::Base
       def run
         process
       end

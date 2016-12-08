@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-module Operations
+module Operationable
   class Operation
     attr_reader :record, :user, :params, :result
 

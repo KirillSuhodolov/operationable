@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-module Operations
+module Operationable
   class Callback
     attr_reader :props
 

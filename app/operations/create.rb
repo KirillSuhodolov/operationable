@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module Operations
-  class Update < ::Operations::Operation
+  class Create < ::Operationable::Operation
     def persist
       record.save
     end

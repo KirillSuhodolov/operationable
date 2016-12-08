@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-module Operations
+module Operationable
   module Runners
-    class Separate < ::Operations::Runners::Base
+    class Separate < ::Operationable::Runners::Base
       def run
         check_callbacks.each { |callback| process(callback) }
       end

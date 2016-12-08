@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module Operations
-  class Destroy < ::Operations::Operation
+  class Update < ::Operationable::Operation
     def persist
-      record.destroy
+      record.save
     end
   end
 end

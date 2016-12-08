@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-module Operations
+module Operationable
   module Runners
     class Base
       attr_reader :callbacks, :record, :user, :params, :result
@@ -10,23 +10,9 @@ module Operations
         @result = result
         @user = user
         @callbacks = []
+        
         initialize_callbacks
       end
-
-      # contstans deprecated, use example below
-      # def initialize_callbacks
-      #   push_to_queue(:method_name, :queue)
-      #   push_to_queue(:broadcast, :low)
-      #   push_to_queue(:notify, :low)
-      #   push_to_queue(:populate_feed, :low)
-      # end
-
-      SYNC = %i().freeze
-      CRITICAL_QUEUE = %i().freeze
-      IMPORTANT_QUEUE = %i().freeze
-      HIGH_QUEUE = %i().freeze
-      LOW_QUEUE = %i().freeze
-      MAILER_QUEUE = %i().freeze
 
       def run
       end
@@ -37,18 +23,7 @@ module Operations
         serializer_instance.serialize
       end
 
-      def queue_hash
-        hash_map = { SYNC: nil }
-        queues.each_key { |key| hash_map["#{key.upcase}_QUEUE".to_sym] = key }
-        hash_map
-      end
-
       def initialize_callbacks
-        queue_hash.each do |const_name, queue|
-          self.class.const_get(const_name).each do |callback_method_name|
-            push_to_queue(callback_method_name, queue)
-          end
-        end
       end
 
       def push_to_queue(callback_method_name, queue=nil)
@@ -103,10 +78,6 @@ module Operations
 
       def class_name
         self.class.name
-      end
-
-      def queues
-        RESQUE_QUEUES
       end
 
       def perform_method
