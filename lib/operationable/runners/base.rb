@@ -10,7 +10,7 @@ module Operationable
         @result = result
         @user = user
         @callbacks = []
-        
+
         initialize_callbacks
       end
 
