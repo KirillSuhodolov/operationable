@@ -21,6 +21,11 @@ module Operationable
       record.reload
     end
 
+    class Builder < Operationable::Builder; end
+    class Callback < Operationable::Callback; end
+    class Specification < Operationable::Callback; end
+    class Serializer < Operationable::Serializer; end
+
     private
 
     def valid
