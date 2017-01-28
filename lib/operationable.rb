@@ -19,5 +19,10 @@ require 'operations/destroy'
 require 'operations/update'
 
 module Operationable
-
+  class Operation
+    class Builder < ::Operationable::Builder; end
+    class Callback < ::Operationable::Callback; end
+    class Specification < ::Operationable::Specification; end
+    class Serializer < ::Operationable::Serializer; end
+  end
 end
