@@ -14,7 +14,8 @@ module Operationable
         { type: 'separate',
           callback_class_name: callback_class_name,
           callback_method_name: callback_method_name,
-          queue: queue }
+          queue: queue,
+          op_id: persist_operation.id }
       end
 
       # def self.call(options, props)
@@ -22,7 +23,7 @@ module Operationable
       # end
 
       def self.call(options, props)
-        ::Operationable::Persister.around_call(props[:op_id], options[:callback_method_name], -> {
+        ::Operationable::Persister.around_call(options[:op_id], options[:callback_method_name], -> {
           options[:callback_class_name].constantize.new(props).method(options[:callback_method_name]).call
         })
       end

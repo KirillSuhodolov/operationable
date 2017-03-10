@@ -19,7 +19,7 @@ module Operationable
         instance = options[:callback_class_name].constantize.new(props)
 
         options[:callback_names].each do |method_name|
-          ::Operationable::Persister.around_call(props[:op_id], method_name, -> {
+          ::Operationable::Persister.around_call(options[:op_id], method_name, -> {
             instance.method(method_name).call
           })
         end
@@ -29,7 +29,8 @@ module Operationable
         { type: 'serial',
           callback_class_name: callback_class_name,
           callback_names: callback_names,
-          queue: queue }
+          queue: queue,
+          op_id: persist_operation.id }
       end
 
       private
