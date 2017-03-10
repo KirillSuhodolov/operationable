@@ -22,7 +22,7 @@ module Operationable
       private
 
       def persist_operation
-        @persist_operation ||= ::Operationable::Persister.persist(callbacks, user.id, props, operation_class_name)
+        @persist_operation ||= ::Operationable::Persister.persist(check_callbacks, user.id, props, operation_class_name)
       end
 
       def props
