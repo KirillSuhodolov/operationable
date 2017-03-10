@@ -12,9 +12,6 @@ module Operationable
         @callbacks = []
 
         initialize_callbacks
-
-        # TODO: No sense, due to performance deterioration, better use postgres/mysql database
-        # persist_operation
       end
 
       def run
@@ -87,7 +84,8 @@ module Operationable
       end
 
       def perform_method
-        sync? ? :perform_now : :perform_later
+        # sync? ? :perform_now : :perform_later
+        :create
       end
 
       def sync?

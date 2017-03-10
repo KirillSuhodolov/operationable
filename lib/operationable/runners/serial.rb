@@ -7,26 +7,29 @@ module Operationable
       end
 
       def process
-        (queue.blank? ? self.class : OperationJob.method(perform_method)).call(options, props)
+        (queue.blank? ? self.class : OperationJob.method(perform_method)).call(
+          q_options: q_options,
+          props: props
+        )
       end
 
-      def self.call(options, props)
-        instance = options[:callback_class_name].constantize.new(props)
-        options[:callback_names].each { |method_name| instance.method(method_name).call }
+      def self.call(q_options:, props:)
+        instance = q_options[:callback_class_name].constantize.new(props)
+        q_options[:callback_names].each { |method_name| instance.method(method_name).call }
       end
 
       # TODO: No sense, due to performance deterioration, better use postgres/mysql database
-      # def self.call(options, props)
-      #   instance = options[:callback_class_name].constantize.new(props)
+      # def self.call(q_options, props)
+      #   instance = q_options[:callback_class_name].constantize.new(props)
       #
-      #   options[:callback_names].each do |method_name|
-      #     ::Operationable::Persister.around_call(options[:op_id], method_name, -> {
+      #   q_options[:callback_names].each do |method_name|
+      #     ::Operationable::Persister.around_call(q_options[:op_id], method_name, -> {
       #       instance.method(method_name).call
       #     })
       #   end
       # end
 
-      def options
+      def q_options
         { type: 'serial',
           callback_class_name: callback_class_name,
           callback_names: callback_names,
