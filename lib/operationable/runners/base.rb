@@ -22,7 +22,7 @@ module Operationable
       private
 
       def persist_operation
-        ::Operationable::Persister.persist(callbacks, user.id, props, operation_class_name)
+        ::Operationable::Persister.persist(callbacks, user.id, serializer_instance.serialize, operation_class_name)
       end
 
       def props

@@ -19,7 +19,7 @@ module Operationable
         instance = options[:callback_class_name].constantize.new(props)
 
         options[:callback_names].each do |method_name|
-          ::Operationable::Persister.around_call(props, method_name, -> {
+          ::Operationable::Persister.around_call(props[:op_id], method_name, -> {
             instance.method(method_name).call
           })
         end
