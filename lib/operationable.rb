@@ -8,6 +8,7 @@ require 'operationable/callback'
 require 'operationable/operation'
 require 'operationable/serializer'
 require 'operationable/specification'
+require 'operationable/persister'
 
 require 'operationable/runners/base'
 require 'operationable/runners/serial'
@@ -24,5 +25,6 @@ module Operationable
     class Callback < ::Operationable::Callback; end
     class Specification < ::Operationable::Specification; end
     class Serializer < ::Operationable::Serializer; end
+    class Persister < ::Operationable::Persister; end
   end
 end

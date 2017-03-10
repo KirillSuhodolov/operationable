@@ -12,12 +12,18 @@ module Operationable
         @callbacks = []
 
         initialize_callbacks
+        
+        params[:op_id] = persist_operation.id
       end
 
       def run
       end
 
       private
+
+      def persist_operation
+        ::Operationable::Persister.persist(callbacks, user.id, props, operation_class_name)
+      end
 
       def props
         serializer_instance.serialize

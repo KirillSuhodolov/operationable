@@ -17,9 +17,16 @@ module Operationable
           queue: queue }
       end
 
+      # def self.call(options, props)
+      #   options[:callback_class_name].constantize.new(props).method(options[:callback_method_name]).call
+      # end
+
       def self.call(options, props)
-        options[:callback_class_name].constantize.new(props).method(options[:callback_method_name]).call
+        ::Operationable::Persister.around_call(props[:op_id], options[:callback_names], -> {
+          options[:callback_class_name].constantize.new(props).method(options[:callback_method_name]).call
+        })
       end
+
     end
   end
 end

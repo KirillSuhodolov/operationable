@@ -22,7 +22,13 @@ module Operationable
     private
 
     def extract_props(record, user)
-      { **extract_from_record(record), **extract_from_user(user), activity: activity, action_name: action_name }
+      {
+        **extract_from_record(record),
+        **extract_from_user(user),
+        params: params,
+        activity: activity,
+        action_name: action_name
+      }
     end
 
     def extract_from_record(record)

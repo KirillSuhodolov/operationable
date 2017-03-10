@@ -10,9 +10,16 @@ module Operationable
         (queue.blank? ? self.class : OperationJob.method(perform_method)).call(options, props)
       end
 
+      # def self.call(options, props)
+      #   instance = options[:callback_class_name].constantize.new(props)
+      #   options[:callback_names].each { |method_name| instance.method(method_name).call }
+      # end
+
       def self.call(options, props)
-        instance = options[:callback_class_name].constantize.new(props)
-        options[:callback_names].each { |method_name| instance.method(method_name).call }
+        ::Operationable::Persister.around_call(props[:op_id], options[:callback_names], -> {
+          instance = options[:callback_class_name].constantize.new(props)
+          options[:callback_names].each { |method_name| instance.method(method_name).call }
+        })
       end
 
       def options
