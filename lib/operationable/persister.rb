@@ -25,7 +25,7 @@ module Operationable
         update(id, name, ::Operation::STATUS_COMPLETED)
       end
 
-      def around_call(id, name, &block)
+      def around_call(id, name, block)
         working(id, name)
         block.call
         completed(id, name)
