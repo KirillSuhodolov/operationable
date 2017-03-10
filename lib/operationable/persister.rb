@@ -21,7 +21,7 @@ module Operationable
         update(id, name, ::Operation::STATUS_WORKING)
       end
 
-      def completed
+      def completed(id, name)
         update(id, name, ::Operation::STATUS_COMPLETED)
       end
 

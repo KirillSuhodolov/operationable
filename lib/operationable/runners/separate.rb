@@ -22,7 +22,7 @@ module Operationable
       # end
 
       def self.call(options, props)
-        ::Operationable::Persister.around_call(props[:op_id], options[:callback_names], -> {
+        ::Operationable::Persister.around_call(props[:op_id], options[:callback_method_name], -> {
           options[:callback_class_name].constantize.new(props).method(options[:callback_method_name]).call
         })
       end

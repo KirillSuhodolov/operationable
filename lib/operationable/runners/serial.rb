@@ -16,10 +16,13 @@ module Operationable
       # end
 
       def self.call(options, props)
-        ::Operationable::Persister.around_call(props[:op_id], options[:callback_names], -> {
-          instance = options[:callback_class_name].constantize.new(props)
-          options[:callback_names].each { |method_name| instance.method(method_name).call }
-        })
+        instance = options[:callback_class_name].constantize.new(props)
+
+        options[:callback_names].each do |method_name|
+          ::Operationable::Persister.around_call(props[:op_id], method_name, -> {
+            instance.method(method_name).call
+          })
+        end
       end
 
       def options
