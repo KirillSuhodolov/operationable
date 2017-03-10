@@ -13,7 +13,8 @@ module Operationable
 
         initialize_callbacks
 
-        persist_operation
+        # TODO: No sense, due to performance deterioration, better use postgres/mysql database
+        # persist_operation
       end
 
       def run

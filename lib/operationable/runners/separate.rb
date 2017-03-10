@@ -18,15 +18,16 @@ module Operationable
           op_id: persist_operation.id }
       end
 
-      # def self.call(options, props)
-      #   options[:callback_class_name].constantize.new(props).method(options[:callback_method_name]).call
-      # end
-
       def self.call(options, props)
-        ::Operationable::Persister.around_call(options[:op_id], options[:callback_method_name], -> {
-          options[:callback_class_name].constantize.new(props).method(options[:callback_method_name]).call
-        })
+        options[:callback_class_name].constantize.new(props).method(options[:callback_method_name]).call
       end
+
+      # TODO: No sense, due to performance deterioration, better use postgres/mysql database
+      # def self.call(options, props)
+      #   ::Operationable::Persister.around_call(options[:op_id], options[:callback_method_name], -> {
+      #     options[:callback_class_name].constantize.new(props).method(options[:callback_method_name]).call
+      #   })
+      # end
 
     end
   end
