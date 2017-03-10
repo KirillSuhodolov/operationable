@@ -12,7 +12,7 @@ module Operationable
         @callbacks = []
 
         initialize_callbacks
-        
+
         params[:op_id] = persist_operation.id
       end
 
