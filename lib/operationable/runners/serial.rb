@@ -7,7 +7,7 @@ module Operationable
       end
 
       def process
-        (queue.blank? ? self.class : OperationJob.method(perform_method)).call(
+        (queue.blank? ? self.class : ::OperationJob.method(perform_method)).call(
           q_options: q_options,
           props: props
         )

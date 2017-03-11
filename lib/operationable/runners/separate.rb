@@ -7,7 +7,7 @@ module Operationable
       end
 
       def process(callback_method_name:, queue: nil)
-        (queue.blank? ? self.class : OperationJob.method(perform_method)).call(
+        (queue.blank? ? self.class : ::OperationJob.method(perform_method)).call(
           q_options: q_options(callback_method_name, queue),
           props: props
         )
