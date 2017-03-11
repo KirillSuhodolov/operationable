@@ -17,6 +17,10 @@ module Operationable
       def run
       end
 
+      def execute_job(q_options:, props:)
+        "#{Operationable.job_class}".constantize.method(perform_method).call(q_options: q_options, props: props)
+      end
+
       private
 
       def persist_operation
@@ -84,8 +88,7 @@ module Operationable
       end
 
       def perform_method
-        sync? ? :perform_now : :perform_later
-        # :create
+        sync? ? Operationable.job_sync_execute_method : :Operationable.job_async_execute_method
       end
 
       def sync?

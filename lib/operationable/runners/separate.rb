@@ -7,10 +7,7 @@ module Operationable
       end
 
       def process(callback_method_name:, queue: nil)
-        (queue.blank? ? self.class : ::OperationJob.method(perform_method)).call(
-          q_options: q_options(callback_method_name, queue),
-          props: props
-        )
+        (queue.blank? ? self.class : execute_job(q_options: q_options(callback_method_name, queue), props: props)
       end
 
       def q_options(callback_method_name, queue)
@@ -31,7 +28,6 @@ module Operationable
       #     q_options[:callback_class_name].constantize.new(props).method(q_options[:callback_method_name]).call
       #   })
       # end
-
     end
   end
 end
