@@ -14,7 +14,23 @@ module Operationable
         initialize_callbacks
       end
 
+      def persist_operation
+        @persist_operation ||= ::Operationable::Persisters::Database.persist(check_callbacks, user.id, props, operation_class_name)
+      end
+
+      def check_status?
+        true
+      end
+
+      def persist?
+        true
+      end
+
       def run
+      end
+
+      def ensure_enqueue
+
       end
 
       def job_method
@@ -26,21 +42,14 @@ module Operationable
       end
 
       def job_sync_execute_method
-        :create
-        # :perform_now
+        :perform_now
       end
 
-
       def job_async_execute_method
-        :create
-        # :perform_later
+        :perform_later
       end
 
       private
-
-      def persist_operation
-        @persist_operation ||= ::Operationable::Persister.persist(check_callbacks, user.id, props, operation_class_name)
-      end
 
       def props
         serializer_instance.serialize
