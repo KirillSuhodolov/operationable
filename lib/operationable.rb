@@ -1,7 +1,9 @@
 require 'rails'
+require 'active_job'
 require 'active_support/dependencies'
 require 'forwardable'
 require 'resque'
+require 'resque-status'
 
 require "operationable/version"
 

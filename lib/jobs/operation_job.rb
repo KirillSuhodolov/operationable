@@ -1,7 +1,4 @@
 # frozen_string_literal: true
-require 'resque-status'
-require 'active_job'
-
 class OperationJob < ActiveJob::Base
   include Resque::Plugins::Status
 
