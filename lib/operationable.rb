@@ -30,6 +30,10 @@ module Operationable
   @job_sync_execute_method = :create # :perform_now
   @job_async_execute_method = :create # :perform_later
 
+  def dfc
+    :dddd
+  end
+
   class Operation
     class Builder < ::Operationable::Builder; end
     class Callback < ::Operationable::Callback; end
