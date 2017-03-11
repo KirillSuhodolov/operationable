@@ -7,7 +7,10 @@ module Operationable
       end
 
       def process
-        (queue.blank? ? self.class : execute_job(q_options: q_options, props: props)
+        (queue.blank? ? self.class : job_method).call(
+          q_options: q_options,
+          props: props
+        )
       end
 
       def self.call(q_options:, props:)

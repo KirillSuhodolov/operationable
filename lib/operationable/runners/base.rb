@@ -17,8 +17,8 @@ module Operationable
       def run
       end
 
-      def execute_job(q_options:, props:)
-        "#{Operationable.job_class}".constantize.method(perform_method).call(q_options: q_options, props: props)
+      def job_method
+        "#{Operationable.job_class}".constantize.method(perform_method)
       end
 
       private
