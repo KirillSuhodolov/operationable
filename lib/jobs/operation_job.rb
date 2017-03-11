@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class OperationJob < ActiveJob::Base
+class OperationJob
   include Resque::Plugins::Status
 
   queue_as do
