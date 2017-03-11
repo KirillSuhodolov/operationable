@@ -1,5 +1,6 @@
 require 'rails'
 require 'active_support/dependencies'
+require 'resque-status'
 
 require "operationable/version"
 
