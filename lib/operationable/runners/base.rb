@@ -84,8 +84,8 @@ module Operationable
       end
 
       def perform_method
-        # sync? ? :perform_now : :perform_later
-        :create
+        sync? ? :perform_now : :perform_later
+        # :create
       end
 
       def sync?
