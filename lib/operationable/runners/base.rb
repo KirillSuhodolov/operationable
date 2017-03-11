@@ -18,7 +18,22 @@ module Operationable
       end
 
       def job_method
-        "#{Operationable.job_class}".constantize.method(perform_method)
+        "#{job_class}".constantize.method(perform_method)
+      end
+
+      def job_class
+        'OperationJob'
+      end
+
+      def job_sync_execute_method
+        :create
+        # :perform_now
+      end
+
+
+      def job_async_execute_method
+        :create
+        # :perform_later
       end
 
       private
@@ -88,7 +103,7 @@ module Operationable
       end
 
       def perform_method
-        sync? ? Operationable.job_sync_execute_method : :Operationable.job_async_execute_method
+        sync? ? job_sync_execute_method : job_async_execute_method
       end
 
       def sync?

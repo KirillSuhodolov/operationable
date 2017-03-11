@@ -24,16 +24,6 @@ require 'operations/destroy'
 require 'operations/update'
 
 module Operationable
-  attr_reader :job_class, :job_sync_execute_method, :job_async_execute_method
-  ABC = 'asd'
-  @job_class = 'OperationJob'
-  @job_sync_execute_method = :create # :perform_now
-  @job_async_execute_method = :create # :perform_later
-
-  def dfc
-    :dddd
-  end
-
   class Operation
     class Builder < ::Operationable::Builder; end
     class Callback < ::Operationable::Callback; end
