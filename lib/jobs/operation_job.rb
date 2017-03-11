@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class OperationJob < ActiveJob::Base
   include Resque::Plugins::Status
-  
+
   queue_as do
     arguments.first[:queue]
   end
