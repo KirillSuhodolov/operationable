@@ -71,7 +71,7 @@ module Operationable
       end
 
       def working
-        set_status({'status' => Operationable::Persisters::Base::STATUS_WORKING})
+        set_status({'status' => Operationable::Persisters::Base::STATUS_WORKING, attempts: 1})
       end
 
       # set the status to 'failed' passing along any additional messages

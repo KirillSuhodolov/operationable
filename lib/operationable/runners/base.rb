@@ -16,7 +16,7 @@ module Operationable
 
       def store_callback(q_options)
         op_cb = ::Operationable::Persisters::Database.create(q_options, props)
-        q_options.merge({op_cb_id: op_cb.id})  
+        q_options.merge({op_cb_id: op_cb.id})
       end
 
       def persist_operation
@@ -47,7 +47,7 @@ module Operationable
       end
 
       def job_sync_execute_method
-        :perform_now
+        :perform_later
       end
 
       def job_async_execute_method

@@ -3,8 +3,15 @@ module Operationable
   module Persisters
     module Database
       def self.create(q_options, props)
+        date = Time.zone.now.to_date
+
         ::OperationCallback.create(
-          q_options: q_options, props: props, status: Operationable::Persisters::Base::STATUS_INIT
+          q_options: q_options,
+          props: props,
+          attempts: 0,
+          week: props[:week] || date.cweek,
+          year: props[:year] || date.year,
+          status: Operationable::Persisters::Base::STATUS_INIT
         )
       end
 
