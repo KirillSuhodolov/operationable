@@ -14,23 +14,15 @@ module Operationable
       end
 
       def q_options(callback_method_name, queue)
-        { type: 'separate',
+        store_callback({ type: 'separate',
           callback_class_name: callback_class_name,
           callback_method_name: callback_method_name,
-          queue: queue,
-          op_id: persist_operation.id }
+          queue: queue })
       end
 
       def self.call(q_options:, props:)
         q_options[:callback_class_name].constantize.new(props).method(q_options[:callback_method_name]).call
       end
-
-      # TODO: No sense, due to performance deterioration, better use postgres/mysql database
-      # def self.call(q_options, props)
-      #   ::Operationable::Persister.around_call(q_options[:op_id], q_options[:callback_method_name], -> {
-      #     q_options[:callback_class_name].constantize.new(props).method(q_options[:callback_method_name]).call
-      #   })
-      # end
     end
   end
 end

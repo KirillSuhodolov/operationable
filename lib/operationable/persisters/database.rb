@@ -2,48 +2,28 @@
 module Operationable
   module Persisters
     module Database
-      class << self
-        def persist(callbacks, initiator_id, params, name)
-          ::Operation.create(
-          callbacks: callbacks.map { |callback|
-            {
-              status: Operationable::Persisters::Base::STATUS_INIT,
-              name: callback[:callback_method_name],
-              queue: callback[:queue]
-            }
-          },
-          initiator_id: initiator_id,
-          params: params,
-          name: name
-          )
-        end
+      def self.create(q_options, props)
+        ::OperationCallback.create(
+          q_options: q_options, props: props, status: Operationable::Persisters::Base::STATUS_INIT
+        )
+      end
 
-        def working(id, name)
-          update(id, name, Operationable::Persisters::Base::STATUS_WORKING)
-        end
+      def notify_database
+        self.database_status = [{status: Operationable::Persisters::Base::STATUS_QUEUED}]
+      end
 
-        def completed(id, name)
-          update(id, name, Operationable::Persisters::Base::STATUS_COMPLETED)
-        end
+      def op_cb_id
+        arguments.first[:q_options][:op_cb_id]
+      end
 
-        def around_call(id, name, block)
-          working(id, name)
-          block.call
-          completed(id, name)
-        end
+      def database_status
+        ::OperationCallback.find(op_cb_id)
+      end
 
-        private
-
-        def update(id, name, status)
-          op = ::Operation.find(id)
-          callbacks = op.callbacks.map do |cb|
-            cb['status'] = status if cb['name'] === name
-            cb
-          end
-
-          op.callbacks = callbacks
-          op.save
-        end
+      def database_status=(new_status)
+        ::OperationCallback.find(op_cb_id).update(
+          new_status.reduce({uuid: uuid}){ |acc, o| acc.merge(o) }
+        )
       end
     end
   end

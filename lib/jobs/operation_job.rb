@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 class OperationJob < ActiveJob::Base
+  include Operationable::Persisters::Base
   include Operationable::Persisters::Memory
-  # include Operationable::Persister
+  include Operationable::Persisters::Database
 
   queue_as do
     arguments.first[:q_options][:queue]
   end
 
   after_enqueue do |job|
-    create_status_hash(job)
+    create_status_hash
+    notify_database
   end
 
   around_perform do |job, block|

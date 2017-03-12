@@ -115,22 +115,20 @@ TODO: describe validators
 
 #Persistence and guaranteed delivery
 
-First add table to store operations and track their execution
+First add table to store operations and track their execution in pair with resque-status
 
 ```
-class CreateOperations < ActiveRecord::Migration[5.0]
+class CreateOperationCallbacks < ActiveRecord::Migration[5.0]
   def change
-    create_table :operations do |t|
-      t.string :name
-      t.integer :initiator_id
-      t.jsonb :params, default: {}
-      t.jsonb :callbacks, default: {}
+    create_table :operation_callbacks do |t|
+      t.string :status
+      t.text :message
+      t.string :uuid
+      t.json :q_options
+      t.json :props
 
       t.timestamps
     end
-
-    add_index :operations, :initiator_id
-    add_index :operations, :name
   end
 end
 ```
