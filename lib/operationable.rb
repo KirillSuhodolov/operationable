@@ -22,7 +22,6 @@ require 'operationable/runners/serial'
 require 'operationable/runners/separate'
 
 require 'jobs/operation_job'
-require 'models/operation_callback'
 
 require 'operations/create'
 require 'operations/destroy'
