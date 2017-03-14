@@ -113,28 +113,6 @@ Class that contain callback methods, that will called after model saved in runti
 #Validators
 TODO: describe validators
 
-#Persistence and guaranteed delivery
-
-First add table to store operations and track their execution in pair with resque-status
-
-```
-class CreateOperationCallbacks < ActiveRecord::Migration[5.0]
-  def change
-    create_table :operation_callbacks do |t|
-      t.string :status
-      t.text :message
-      t.string :uuid
-      t.json :q_options
-      t.json :props
-
-      t.timestamps
-    end
-  end
-end
-```
-
-After that all operations by default will populate database with status of execution.
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

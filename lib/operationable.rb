@@ -13,10 +13,6 @@ require 'operationable/operation'
 require 'operationable/serializer'
 require 'operationable/specification'
 
-require 'operationable/persisters/base'
-require 'operationable/persisters/database'
-require 'operationable/persisters/memory'
-
 require 'operationable/runners/base'
 require 'operationable/runners/serial'
 require 'operationable/runners/separate'
