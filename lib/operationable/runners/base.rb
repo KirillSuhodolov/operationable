@@ -15,12 +15,7 @@ module Operationable
       end
 
       def store_callback(q_options)
-        op_cb = ::Operationable::Persisters::Database.create(q_options, props)
-        q_options.merge({op_cb_id: op_cb.id})
-      end
-
-      def persist_operation
-        @persist_operation ||= ::Operationable::Persisters::Database.persist(check_callbacks, user.id, props, operation_class_name)
+        q_options
       end
 
       def check_status?
