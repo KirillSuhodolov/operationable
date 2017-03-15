@@ -1,6 +1,5 @@
 require 'rails'
 require 'active_job'
-require 'active_record'
 require 'active_support/dependencies'
 require 'forwardable'
 require 'resque'
