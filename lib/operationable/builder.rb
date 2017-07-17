@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 module Operationable
   class Builder
-    attr_reader :record, :params
+    attr_reader :record, :user, :params
 
-    def initialize(record, params={})
+    def initialize(record, user, params={})
       @record = record
+      @user = user
       @params = params
     end
 

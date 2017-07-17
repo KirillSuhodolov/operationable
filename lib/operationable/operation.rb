@@ -32,7 +32,7 @@ module Operationable
     end
 
     def build
-      "#{class_name}::Builder".constantize.new(record, params).build
+      "#{class_name}::Builder".constantize.new(record, user, params).build
     end
 
     def run
