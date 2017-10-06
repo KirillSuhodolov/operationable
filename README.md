@@ -22,7 +22,7 @@ Or install it yourself as:
 
 Call operation at your controllers
 
-```
+```ruby
 class EntityController < ApplicationController
   def create
     op = EntityOperation::Create.new(@entity, current_user)
@@ -39,7 +39,7 @@ end
 Move you model callbacks to operation
 
 
-```
+```ruby
 module EntityOperation
   class Create < Operationable::Create
     class Builder < Operationable::Builder
@@ -76,21 +76,21 @@ module EntityOperation
 end
 ```
 
-#Operation
+### Operation
 
 Exiting operations: create, update, destroy or use raw Operationable::Operation.
 Operationable::Create(Update, Destory) inherited from Operationable::Operation
 
-#Builder
+### Builder
 
 Builder useful for that things you usually do at before_create/update/destroy callbacks.
 
-#Specification
+### Specification
 
 Specification decides run or not run callback based on boolean value returned from should_ prefixed callback name.
 If specification not described, callback will called at any case.
 
-#Runner
+### Runner
 
 Exists two types for Runners - Serial and Separate runner. Serial callbacks will run one after another, at described order.
 Separate runners not related one for another and can be run simultaneously.
@@ -101,16 +101,16 @@ push_to_queue(callback_name, queue_name) if queue_name not passed, callback will
 
 Operations work via ActiveJob, so you can use any adapter that you want.
 
-#Serializer
+### Serializer
 
 Serializer used to define what values should be passed to job(redis do not accept AR instances or other complex structures).
 Also you don't need all record fields should passed to callbacks.
 
-#Callback
+### Callback
 
 Class that contain callback methods, that will called after model saved in runtime or in background
 
-#Validators
+### Validators
 TODO: describe validators
 
 ## Development
