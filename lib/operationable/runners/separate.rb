@@ -6,10 +6,15 @@ module Operationable
         check_callbacks.each { |callback| process(callback) }
       end
 
-      def process(callback_method_name:, queue: nil)
-        (queue.blank? ? self.class : job_method).call(
+      def process(callback_method_name:, queue: nil, params:)
+        callback_class = callback_method_name.to_s.safe_constantize
+
+        (queue.blank? ?
+          self.class :
+          (callback_class || job_class.constantize).method(perform_method)
+        ).call(
           q_options: q_options(callback_method_name, queue),
-          props: props
+          props: {**props, **params}
         )
       end
 
