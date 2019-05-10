@@ -33,10 +33,6 @@ module Operationable
 
       end
 
-      def job_method
-        "#{job_class}".constantize.method(perform_method)
-      end
-
       def job_class
         'OperationJob'
       end
@@ -59,8 +55,13 @@ module Operationable
       end
 
       def push_to_queue(*callback_method_names, queue: nil, params: {})
-        callback_method_names.each do |callback_method_name|
-          callbacks << { callback_method_name: callback_method_name.to_s, queue: queue.to_s, params: params }
+        callback_method_names.each do |callback_method_name, job_class_name|
+          callbacks << {
+            callback_method_name: callback_method_name.to_s,
+            job_class_name: job_class_name.nil? ? job_class.to_s : job_class_name.to_s,
+            queue: queue.to_s,
+            params: params
+          }
         end
       end
 
