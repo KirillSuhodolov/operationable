@@ -1,3 +1,3 @@
 module Operationable
-  VERSION = "0.3.9"
+  VERSION = "0.4.8"
 end

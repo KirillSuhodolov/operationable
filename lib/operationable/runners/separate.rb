@@ -12,7 +12,7 @@ module Operationable
 
         (queue.blank? ? self.class : job_class_name.constantize.method(perform_method)).call(
           q_options: q_options(callback_method_name, queue),
-          props: {**props, **params}
+          props: props.merge(params)
         )
       end
 
