@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 module Operationable
   class Callback
-    attr_reader :props
+    attr_reader :props, :q_options
 
-    def initialize(props)
+    def initialize(props, q_options)
       @props = props
+      @q_options = q_options
+    end
+
+    def options
+      @q_options
     end
 
     def record

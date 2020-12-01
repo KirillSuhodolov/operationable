@@ -24,7 +24,7 @@ module Operationable
       end
 
       def self.call(q_options:, props:)
-        q_options[:callback_class_name].constantize.new(props).method(q_options[:callback_method_name]).call
+        q_options[:callback_class_name].constantize.new(props, q_options).method(q_options[:callback_method_name]).call
       end
     end
   end

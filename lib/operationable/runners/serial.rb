@@ -14,7 +14,7 @@ module Operationable
       end
 
       def self.call(q_options:, props:)
-        instance = q_options[:callback_class_name].constantize.new(props)
+        instance = q_options[:callback_class_name].constantize.new(props, q_options)
         q_options[:callback_names].each { |method_name| instance.method(method_name).call }
       end
 
