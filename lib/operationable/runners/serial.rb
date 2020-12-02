@@ -26,6 +26,10 @@ module Operationable
           queue: queue })
       end
 
+      def callback_names
+        check_callbacks.map { |callback| callback[:callback_method_name] }
+      end
+
       private
 
       def queue

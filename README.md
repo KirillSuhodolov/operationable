@@ -59,11 +59,23 @@ module EntityOperation
       end
     end
 
+    class Delayer < Operationable::Delayer
+      def delay_callback_one
+        { wait_until: Date.tomorrow.noon } # or wait
+      end
+    end
+
     class Runner < Operationable::Runners::Separate
       def initialize_callbacks
         push_to_queue(:callback_one)
-        push_to_queue(:callback_two, :low)
-        push_to_queue(:callback_three, :high)
+        push_to_queue(:callback_two, queue: :low)
+        push_to_queue(:callback_three, queue: :high, job_class_name: MySpecialJob)
+        push_to_queue(:callback_four, queue: :high, params: {hello: 123})
+      end
+
+      # This is default behaviour, but you can redefine it, to use with other adapter for example
+      def perform(job_class_name, args, delayed_params)
+        job_class_name.to_s.constantize.set(delayed_params).method(perform_method).call(args)
       end
     end
 
@@ -101,6 +113,10 @@ push_to_queue(callback_name, queue_name) if queue_name not passed, callback will
 
 Operations work via ActiveJob, so you can use any adapter that you want.
 
+### Delayer
+
+This class process when process job
+
 ### Job
 
 I get rid of ActiveJob dependency. So, extend you exting job class with code below
@@ -118,7 +134,7 @@ end
 
 ```
 
-Define job class name at your initializers (config/initializers/operationable.rb)
+Define global job class name at your initializers (config/initializers/operationable.rb)
 
 ```ruby
 module Operationable
@@ -127,17 +143,10 @@ module Operationable
       def job_class
         'OpJob'
       end
-
-      # This is default behaviour, but you can redefine it, to use with other adapter
-      def perform(job_class_name, args)
-        job_class_name.to_s.constantize.method(perform_method).call(args)
-      end
     end
   end
 end
 ```
-
-
 
 ### Serializer
 

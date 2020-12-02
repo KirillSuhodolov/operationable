@@ -15,7 +15,12 @@ module Operationable
           props: props.merge(params)
         }
 
-        queue.blank? ? self.class.call(args) : perform(job_class_name, args)
+        queue.blank? ? self.class.call(args) : perform(job_class_name, args, get_delayed_params(callback_method_name))
+      end
+
+      def get_delayed_params(callback_method_name)
+        delay = delayer&.try("delay_#{callback_method_name}".to_sym)
+        delay.nil? ? {} : delay
       end
 
       def q_options(callback_method_name, queue)

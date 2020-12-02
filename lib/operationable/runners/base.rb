@@ -54,8 +54,8 @@ module Operationable
       def initialize_callbacks
       end
 
-      def push_to_queue(*callback_method_names, queue: nil, params: {})
-        callback_method_names.each do |callback_method_name, job_class_name|
+      def push_to_queue(*callback_method_names, job_class_name: nil, queue: nil, params: {})
+        callback_method_names.each do |callback_method_name|
           callbacks << {
             callback_method_name: callback_method_name.to_s,
             job_class_name: job_class_name.nil? ? job_class.to_s : job_class_name.to_s,
@@ -63,10 +63,6 @@ module Operationable
             params: params
           }
         end
-      end
-
-      def callback_names
-        check_callbacks.map { |callback| callback[:callback_method_name] }
       end
 
       def check_callbacks
@@ -77,7 +73,11 @@ module Operationable
       end
 
       def serializer_instance
-        serializer_class_name.constantize.new(record, user, params, result, activity, action_name)
+        @serializer_instance ||= serializer_class_name.constantize.new(record, user, params, result, activity, action_name)
+      end
+
+      def delayer
+        @delayer ||= delayer_class_name.constantize.new(record, user, params, result, activity, action_name)
       end
 
       def specification
@@ -94,6 +94,10 @@ module Operationable
 
       def specification_class_name
         "#{operation_class_name}::Specification"
+      end
+
+      def delayer_class_name
+        "#{operation_class_name}::Delayer"
       end
 
       def operation_class_name
@@ -116,8 +120,8 @@ module Operationable
         sync? ? job_sync_execute_method : job_async_execute_method
       end
 
-      def perform(job_class_name, args)
-        job_class_name.to_s.constantize.method(perform_method).call(args)
+      def perform(job_class_name, args, delayed_params)
+        job_class_name.to_s.constantize.set(delayed_params).method(perform_method).call(args)
       end
 
       def sync?
