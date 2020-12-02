@@ -81,7 +81,7 @@ module Operationable
       end
 
       def specification
-        @specification ||= specification_class_name.constantize.new(record, user, params, activity, action_name)
+        @specification ||= specification_class_name.constantize.new(record, user, params, result, activity, action_name)
       end
 
       def callback_class_name
