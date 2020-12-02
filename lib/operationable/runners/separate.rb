@@ -10,10 +10,12 @@ module Operationable
         # callback can be class
         # callback_class = callback_method_name.to_s.safe_constantize
 
-        (queue.blank? ? self.class : job_class_name.constantize.method(perform_method)).call(
+        args = {
           q_options: q_options(callback_method_name, queue),
           props: props.merge(params)
-        )
+        }
+
+        queue.blank? ? self.class.call(args) : perform(job_class_name, args)
       end
 
       def q_options(callback_method_name, queue)

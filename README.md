@@ -101,6 +101,44 @@ push_to_queue(callback_name, queue_name) if queue_name not passed, callback will
 
 Operations work via ActiveJob, so you can use any adapter that you want.
 
+### Job
+
+I get rid of ActiveJob dependency. So, extend you exting job class with code below
+
+```ruby
+class OpJob < ActiveJob::Base
+  queue_as do
+    arguments.first[:q_options][:queue]
+  end
+
+  def perform(q_options:, props:)
+    "Operationable::Runners::#{q_options[:type].capitalize}".constantize.call(q_options: q_options, props: props)
+  end
+end
+
+```
+
+Define job class name at your initializers (config/initializers/operationable.rb)
+
+```ruby
+module Operationable
+  module Runners
+    class Base
+      def job_class
+        'OpJob'
+      end
+
+      # This is default behaviour, but you can redefine it, to use with other adapter
+      def perform(job_class_name, args)
+        job_class_name.to_s.constantize.method(perform_method).call(args)
+      end
+    end
+  end
+end
+```
+
+
+
 ### Serializer
 
 Serializer used to define what values should be passed to job(redis do not accept AR instances or other complex structures).

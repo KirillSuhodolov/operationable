@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# TODO: never used, may be remove
 module Operationable
   module Runners
     class Serial < ::Operationable::Runners::Base
@@ -7,7 +8,7 @@ module Operationable
       end
 
       def process
-        (queue.blank? ? self.class : job_class.to_s.constantize.method(perform_method)).call(
+        (queue.blank? ? self.class : perform(job_class_name)).call(
           q_options: q_options,
           props: props
         )

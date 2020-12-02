@@ -116,6 +116,10 @@ module Operationable
         sync? ? job_sync_execute_method : job_async_execute_method
       end
 
+      def perform(job_class_name, args)
+        job_class_name.to_s.constantize.method(perform_method).call(args)
+      end
+
       def sync?
         %w(test development).include? Rails.env
       end

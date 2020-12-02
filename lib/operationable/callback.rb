@@ -8,10 +8,6 @@ module Operationable
       @q_options = q_options
     end
 
-    def options
-      @q_options
-    end
-
     def record
       @record ||= props[:name].constantize.find(props[:id])
     end
