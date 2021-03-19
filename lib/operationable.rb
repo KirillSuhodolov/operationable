@@ -15,10 +15,6 @@ require 'operationable/runners/base'
 require 'operationable/runners/serial'
 require 'operationable/runners/separate'
 
-require 'operations/create'
-require 'operations/destroy'
-require 'operations/update'
-
 module Operationable
   class Operation
     class Builder < ::Operationable::Builder; end
