@@ -11,10 +11,10 @@ module Operationable
         # callback_class = callback_method_name.to_s.safe_constantize
 
         args = {
-          q_options: q_options(callback_method_name, queue),
-          props: props.merge(params)
-        }
-
+          q_options: q_options(callback_method_name, queue).to_h,
+          props: props.merge(params).to_h
+        }.to_h.deep_stringify_keys
+  
         queue.blank? ? self.class.call(args) : perform(job_class_name, args, get_delayed_params(callback_method_name))
       end
 
@@ -30,8 +30,25 @@ module Operationable
           queue: queue })
       end
 
-      def self.call(q_options:, props:)
-        q_options[:callback_class_name].constantize.new(props, q_options).method(q_options[:callback_method_name]).call
+      class << self
+        def operation_name
+          self.to_s.split('::').last(3).first(2).map(&:underscore).join(':')
+        end
+    
+        def call(params)
+          q_options = extract_q_options(params)
+          props = extract_props(params)
+  
+          q_options[:callback_class_name].constantize.new(props, q_options).method(q_options[:callback_method_name]).call
+        end
+  
+        def extract_props(params)
+          params['props'].deep_symbolize_keys
+        end
+  
+        def extract_q_options(params)
+          params['q_options'].deep_symbolize_keys
+        end
       end
     end
   end

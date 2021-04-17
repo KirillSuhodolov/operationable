@@ -63,8 +63,8 @@ module Operationable
       params.transform_values! do |value|
         if value.is_a? Array
           value.map { |i| acceptable_argument?(i) ? i : i.to_s }
-        elsif value.is_a? Hash
-          stringify_arguments(value)
+        elsif [Hash, HashWithIndifferentAccess, ActionController::Parameters].any? { |klass| value.is_a? klass }
+          stringify_arguments(value.to_h)
         else
           acceptable_argument?(value) ? value : value.to_s
         end

@@ -15,5 +15,9 @@ module Operationable
     def user
       @user ||= User.find(props[:changed_by_id])
     end
+
+    def params
+      props[:params]
+    end
   end
 end

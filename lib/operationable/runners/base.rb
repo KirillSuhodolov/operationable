@@ -1,8 +1,46 @@
 # frozen_string_literal: true
 module Operationable
   module Runners
+    module Wrappable
+      def push_to_queue(*callback_method_names, job_class_name: nil, queue: nil, params: {})
+        callback_method_names.each do |callback_method_name|
+          callbacks << {
+            callback_method_name: callback_method_name.to_s,
+            job_class_name: job_class_name.nil? ? job_class.to_s : job_class_name.to_s,
+            queue: (job_class_name && queue.blank?) ? job_class_name.to_s.constantize.queue_name : queue.to_s,
+            params: params
+          }
+        end
+      end
+  
+      def add_part(modul, opts=nil)
+        modul.execute(self, opts)
+      end
+  
+      def callbacks
+        @callbacks ||= []
+      end
+  
+      def inherited_callbacks
+        ancestors
+          .grep(Wrappable)
+          .reverse
+          .flat_map(&:callbacks)
+      end
+  
+      def new(*arguments, &block)
+        instance = allocate
+        instance.send(:initialize, *arguments, &block)
+        instance_callbacks = instance.instance_variable_get(:@callbacks)
+        instance.instance_variable_set(:@callbacks, instance_callbacks.concat(inherited_callbacks).uniq)
+        instance
+      end
+    end
+    
     class Base
       attr_reader :callbacks, :record, :user, :params, :result
+
+      extend Wrappable
 
       def initialize(record, params, result, user)
         @record = record

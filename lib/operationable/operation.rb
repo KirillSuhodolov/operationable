@@ -28,9 +28,13 @@ module Operationable
     end
 
     def persist
-      record
+      save_record(record)
     end
 
+    def save_record(record)
+      record
+    end
+    
     def build
       "#{class_name}::Builder".constantize.new(record, user, params).build
     end
@@ -41,6 +45,10 @@ module Operationable
 
     def class_name
       self.class.name
+    end
+
+    def operation_name
+      self.class.to_s.split('::').last(2).map(&:underscore).join(':')
     end
   end
 end
