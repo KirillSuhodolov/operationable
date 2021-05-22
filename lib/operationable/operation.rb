@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 module Operationable
   class Operation
+    include Fledgedable
+    include AsyncFledgedable
+
+    do_when :valid
+
     attr_reader :record, :user, :params, :result
 
     def initialize(record, user, params={})
@@ -40,7 +45,16 @@ module Operationable
     end
 
     def run
+      push_to_queue(:run, job_class_name: lookup_operation_job, queue: job_queue, params: {})
       "#{class_name}::Runner".constantize.new(record, params, result, user).run
+    end
+
+    def lookup_operation_job
+
+    end
+
+    def job_queue
+    
     end
 
     def class_name

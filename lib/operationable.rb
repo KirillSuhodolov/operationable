@@ -12,8 +12,11 @@ require 'operationable/specification'
 require 'operationable/delayer'
 
 require 'operationable/runners/base'
-require 'operationable/runners/serial'
+# require 'operationable/runners/serial'
 require 'operationable/runners/separate'
+
+require 'operationable/fledgedable'
+require 'operationable/async_fledgedable'
 
 module Operationable
   class Operation
